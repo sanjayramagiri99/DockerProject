@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-const API_BASE = 'http://localhost:8080';
+const API_BASE = import.meta.env.VITE_API_BASE || "";
 
 function App() {
   const [notes, setNotes] = useState([]);
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
   const loadNotes = async () => {
     setLoading(true);
-    setError('');
+    setError("");
     try {
       const res = await fetch(`${API_BASE}/api/notes`);
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
@@ -32,15 +32,15 @@ function App() {
     e.preventDefault();
     if (!text.trim()) return;
     setSaving(true);
-    setError('');
+    setError("");
     try {
       const res = await fetch(`${API_BASE}/api/notes`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
       });
       if (!res.ok) throw new Error(`Save failed: ${res.status}`);
-      setText('');
+      setText("");
       await loadNotes();
     } catch (err) {
       setError(err.message);
@@ -68,7 +68,7 @@ function App() {
             disabled={saving}
           />
           <button type="submit" disabled={saving}>
-            {saving ? 'Saving...' : 'Save'}
+            {saving ? "Saving..." : "Save"}
           </button>
         </form>
         {error && <p className="error">Error: {error}</p>}
@@ -96,5 +96,3 @@ function App() {
 }
 
 export default App;
-
-
