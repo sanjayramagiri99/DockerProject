@@ -1,6 +1,6 @@
 # Full-Stack Starter (React + Java)
 
-This project contains a minimal React frontend and a Java microservice backend (Spring Boot style). Docker artifacts are intentionally omitted per request.
+This project contains a React frontend and a Java microservice backend (Spring Boot). The backend persists notes to MySQL. Docker artifacts are intentionally omitted per request.
 
 ## Structure
 - `frontend/` — React app using Vite build tooling.
@@ -10,26 +10,34 @@ This project contains a minimal React frontend and a Java microservice backend (
 - Node.js 18+ and npm
 - Java 17+
 - Maven 3.9+ (wrapper not included)
+- MySQL 8+ running locally
 
-## Frontend
+## Backend (MySQL + Spring Boot)
+1) Start MySQL locally and create (or let Hibernate create) the DB in `application.properties`:
+   - Default URL: `jdbc:mysql://localhost:3306/demo_db?createDatabaseIfNotExist=true`
+   - Default credentials: `root / changeme` (change these in `backend/src/main/resources/application.properties`)
+2) Run the service:
+```bash
+cd backend
+mvn clean spring-boot:run   # http://localhost:8080
+```
+
+API routes:
+- `GET /api/notes` — list notes (newest first)
+- `POST /api/notes` — create note with JSON body `{ "text": "your note" }`
+
+## Frontend (React + Vite)
 ```bash
 cd frontend
 npm install
-npm run dev   # starts Vite dev server (default: http://localhost:5173)
+npm run dev   # http://localhost:5173
 npm run build # production build into dist/
 ```
 
-## Backend
-```bash
-cd backend
-mvn clean spring-boot:run   # starts on http://localhost:8080
-```
-
-### Sample endpoint
-- `GET /api/greeting` → `{"message":"Hello from the microservice"}`
+The UI lets you add notes and view them; it calls the backend on `http://localhost:8080`.
 
 ## Notes
 - No Dockerfile is provided; feel free to add containerization as needed.
-- Ports and other settings can be adjusted in `backend/src/main/resources/application.properties`.
+- Ports, DB URL, and credentials can be adjusted in `backend/src/main/resources/application.properties`.
 
 
