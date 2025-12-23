@@ -39,6 +39,35 @@ body {
   font-size: 1.25rem;
 }
 
+.form {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.form input {
+  flex: 1;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+}
+
+.form button {
+  padding: 0.65rem 1.1rem;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 ul {
   padding-left: 1.25rem;
   margin: 0;
@@ -49,6 +78,25 @@ code {
   padding: 0.15rem 0.3rem;
   border-radius: 6px;
   font-size: 0.95rem;
+}
+
+.notes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.notes li {
+  padding: 0.85rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.notes small {
+  color: #64748b;
 }
 
 .error {
