@@ -1,0 +1,11 @@
+node_modules
+dist
+.vite
+.DS_Store
+target
+.idea
+.classpath
+.project
+.settings
+
+
