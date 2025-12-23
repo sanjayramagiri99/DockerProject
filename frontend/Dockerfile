@@ -1,7 +1,19 @@
-FROM node:18-alpine 
+FROM node:18-alpine AS build
 WORKDIR /app
+
+# Install dependencies
 COPY package*.json ./
 RUN npm install
+
+# Build with optional API base override at build time
+ARG VITE_API_BASE
+ENV VITE_API_BASE=${VITE_API_BASE}
 COPY . .
-EXPOSE 5173
-CMD ["npm","run","dev"]
+RUN npm run build
+
+# Serve static build with nginx
+FROM nginx:1.27-alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

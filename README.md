@@ -40,4 +40,14 @@ The UI lets you add notes and view them; it calls the backend on `http://localho
 - No Dockerfile is provided; feel free to add containerization as needed.
 - Ports, DB URL, and credentials can be adjusted in `backend/src/main/resources/application.properties`.
 
+## Run with Docker Compose
+```bash
+docker compose -f Docker-compose.yaml up --build
+```
+
+Services:
+- MySQL: `localhost:3306` (user: `demo`, pass: `demo123`, db: `demo_db`, root pass: `changeme`)
+- Backend: `http://localhost:8080`
+- Frontend: `http://localhost:5173` (served by nginx; build arg `VITE_API_BASE` points to backend service)
+
 
