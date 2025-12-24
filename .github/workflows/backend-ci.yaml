@@ -35,7 +35,7 @@ jobs:
         working-directory: ./backend
 
       - name: Upload artifact
-        uses: actions/upload-artifact
+        uses: actions/upload-artifact@v4
         with:
           name: backend-build
           path: backend/target/*.jar
