@@ -1,0 +1,41 @@
+name: backend-ci
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v5
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: test the package
+        run: mvn test
+        working-directory: ./backend
+
+      - name: Build project
+        run: mvn clean package
+        working-directory: ./backend
+
+      - name: Upload artifact
+        uses: actions/upload-artifact
+        with:
+          name: backend-build
+          path: backend/target/*.jar

@@ -3,7 +3,7 @@ name: frontend
 on:
   pull_request:
     branches:
-      - "feature/**"
+      - main
 
 jobs:
   build:
