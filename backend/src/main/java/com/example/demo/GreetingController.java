@@ -7,8 +7,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 public class GreetingController {
+
+    @GetMapping("/")
+    public Map<String, String> root() {
+        return Map.of(
+            "message", "Backend is running!",
+            "status", "OK",
+            "endpoints", "/api/greeting, /api/users, /api/products, /api/tasks"
+        );
+    }
 
     @GetMapping("/api/greeting")
     public Map<String, String> greeting() {
