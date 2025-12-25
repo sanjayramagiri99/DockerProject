@@ -46,7 +46,8 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_BASE: http://localhost:8080
+        # VITE_API_BASE: http://localhost:8080
+        VITE_API_BASE: "" # Use relative URLs since nginx will proxy
     container_name: demo-frontend
     restart: unless-stopped
     depends_on:
