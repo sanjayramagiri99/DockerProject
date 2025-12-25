@@ -3,10 +3,12 @@
 This project contains a React frontend with three pages and a Java microservice backend (Spring Boot). The backend persists data to MySQL (supports both local MySQL and AWS RDS).
 
 ## Structure
+
 - `frontend/` — React app using Vite with React Router for multi-page navigation
 - `backend/` — Spring Boot microservice with REST APIs for Users, Products, and Tasks
 
 ## Features
+
 - **Three Pages:**
   1. **User Registration** - Register users with name, email, and phone
   2. **Product Entry** - Add products with name, price, and description
@@ -16,6 +18,7 @@ This project contains a React frontend with three pages and a Java microservice 
   - AWS RDS MySQL (via environment variables)
 
 ## Prerequisites
+
 - Node.js 18+ and npm
 - Java 17+
 - Maven 3.9+
@@ -25,6 +28,7 @@ This project contains a React frontend with three pages and a Java microservice 
 ## Local Development (Without Docker)
 
 ### Backend Setup
+
 1. Start MySQL locally and create the database:
    ```sql
    CREATE DATABASE demo_db;
@@ -37,6 +41,7 @@ This project contains a React frontend with three pages and a Java microservice 
    ```
 
 ### Frontend Setup
+
 ```bash
 cd frontend
 npm install
@@ -46,6 +51,7 @@ npm run dev   # http://localhost:5173
 ## API Endpoints
 
 ### Users
+
 - `GET /api/users` — List all users (newest first)
 - `POST /api/users` — Create user with JSON body:
   ```json
@@ -57,6 +63,7 @@ npm run dev   # http://localhost:5173
   ```
 
 ### Products
+
 - `GET /api/products` — List all products (newest first)
 - `POST /api/products` — Create product with JSON body:
   ```json
@@ -68,6 +75,7 @@ npm run dev   # http://localhost:5173
   ```
 
 ### Tasks
+
 - `GET /api/tasks` — List all tasks (newest first)
 - `POST /api/tasks` — Create task with JSON body:
   ```json
@@ -81,11 +89,13 @@ npm run dev   # http://localhost:5173
 ## Run with Docker Compose
 
 ### Using Local MySQL (Default)
+
 ```bash
 docker compose -f Docker-compose.yaml up --build
 ```
 
 Services:
+
 - MySQL: `localhost:3306` (user: `demo`, pass: `demo123`, db: `demo_db`, root pass: `changeme`)
 - Backend: `http://localhost:8080`
 - Frontend: `http://localhost:5173`
@@ -95,6 +105,7 @@ Services:
 1. **Comment out the `db` service** in `Docker-compose.yaml` (or remove it)
 
 2. **Update backend environment variables** in `Docker-compose.yaml`:
+
    ```yaml
    backend:
      environment:
@@ -112,6 +123,7 @@ Services:
    ```
 
 ### AWS RDS Setup Notes
+
 - Ensure your RDS instance is publicly accessible (or configure VPC/security groups appropriately)
 - The database `demo_db` will be created automatically if `createDatabaseIfNotExist=true` is in the URL
 - SSL is enabled by default for RDS connections (`useSSL=true&requireSSL=true`)
@@ -120,18 +132,23 @@ Services:
 ## Configuration
 
 ### Backend Configuration
+
 Edit `backend/src/main/resources/application.properties` to customize:
+
 - Database connection (supports environment variable overrides)
 - JPA/Hibernate settings
 - Connection pool settings
 
 ### Frontend Configuration
+
 - API base URL is set via build arg `VITE_API_BASE` in Docker Compose
 - For local development, defaults to empty string (relative URLs)
 - For Docker, set to `http://localhost:8080` to access backend from browser
 
 ## Database Schema
+
 The application automatically creates the following tables:
+
 - `users` - User registrations
 - `products` - Product catalog
 - `tasks` - Task management
