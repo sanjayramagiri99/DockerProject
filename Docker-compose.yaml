@@ -29,11 +29,13 @@ services:
       # SPRING_DATASOURCE_USERNAME: demo
       # SPRING_DATASOURCE_PASSWORD: demo123
       # For AWS RDS, uncomment and update these:
+      # Required: Set these in .env file or environment
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
-      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
+      # Optional: Defaults provided if not set in .env
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO:-update}
+      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL:-false}
     # depends_on:
     #   db:
     #     condition: service_healthy
