@@ -1,10 +1,10 @@
 version: "3.9"
 
 services:
+  # Local MySQL service (comment out if using AWS RDS)
   db:
     image: mysql:8.0
     container_name: demo-mysql
-
     environment:
       MYSQL_ROOT_PASSWORD: changeme
       MYSQL_DATABASE: demo_db
@@ -14,6 +14,11 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
@@ -21,12 +26,21 @@ services:
     container_name: demo-backend
     restart: unless-stopped
     environment:
+      # For local MySQL (default):
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/demo_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: demo
       SPRING_DATASOURCE_PASSWORD: demo123
+
+      # For AWS RDS, uncomment and update these:
+      # SPRING_DATASOURCE_URL: jdbc:mysql://your-rds-endpoint.region.rds.amazonaws.com:3306/demo_db?useSSL=true&requireSSL=true
+      # SPRING_DATASOURCE_USERNAME: your-rds-username
+      # SPRING_DATASOURCE_PASSWORD: your-rds-password
+
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "false"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8080:8080"
 
