@@ -1,22 +1,22 @@
 services:
   # Local MySQL service (comment out if using AWS RDS)
-  db:
-    image: mysql:8.0
-    container_name: demo-mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: changeme
-      MYSQL_DATABASE: demo_db
-      MYSQL_USER: demo
-      MYSQL_PASSWORD: demo123
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  # db:
+  #   image: mysql:8.0
+  #   container_name: demo-mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: changeme
+  #     MYSQL_DATABASE: demo_db
+  #     MYSQL_USER: demo
+  #     MYSQL_PASSWORD: demo123
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - db_data:/var/lib/mysql
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
   backend:
     build:
@@ -25,18 +25,20 @@ services:
     restart: unless-stopped
     environment:
       # For local MySQL (default):
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/demo_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: demo
-      SPRING_DATASOURCE_PASSWORD: demo123
+      # SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/demo_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      # SPRING_DATASOURCE_USERNAME: demo
+      # SPRING_DATASOURCE_PASSWORD: demo123
       # For AWS RDS, uncomment and update these:
-      # SPRING_DATASOURCE_URL: jdbc:mysql://your-rds-endpoint.region.rds.amazonaws.com:3306/demo_db?useSSL=true&requireSSL=true
-      # SPRING_DATASOURCE_USERNAME: your-rds-username
-      # SPRING_DATASOURCE_PASSWORD: your-rds-password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_SHOW_SQL: "false"
-    depends_on:
-      db:
-        condition: service_healthy
+      # Required: Set these in .env file or environment
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      # Optional: Defaults provided if not set in .env
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO:-update}
+      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL:-false}
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
     ports:
       - "8080:8080"
 
@@ -44,13 +46,13 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_BASE: http://localhost:8080
+        # VITE_API_BASE: http://localhost:8080
+        VITE_API_BASE: "" # Use relative URLs since nginx will proxy
     container_name: demo-frontend
     restart: unless-stopped
     depends_on:
       - backend
     ports:
       - "5173:80"
-
-volumes:
-  db_data:
+# volumes:
+#   db_data:
