@@ -58,7 +58,7 @@ npm run dev   # http://localhost:5173
   {
     "name": "John Doe",
     "email": "john@example.com",
-    "phone": "+8898989898"
+    "phone": "+1234567890"
   }
   ```
 
