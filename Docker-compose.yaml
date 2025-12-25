@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   # Local MySQL service (comment out if using AWS RDS)
   db:
