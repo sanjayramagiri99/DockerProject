@@ -54,4 +54,4 @@ jobs:
         with:
           context: ./backend
           push: true
-          tags: sanjayramagiri99/backend:latest
+          tags: sanjayramagiri99/backend:latest-${{ github.sha }}
