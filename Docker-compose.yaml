@@ -30,12 +30,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/demo_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: demo
       SPRING_DATASOURCE_PASSWORD: demo123
-      
+
       # For AWS RDS, uncomment and update these:
       # SPRING_DATASOURCE_URL: jdbc:mysql://your-rds-endpoint.region.rds.amazonaws.com:3306/demo_db?useSSL=true&requireSSL=true
       # SPRING_DATASOURCE_USERNAME: your-rds-username
       # SPRING_DATASOURCE_PASSWORD: your-rds-password
-      
+
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: "false"
     depends_on:
