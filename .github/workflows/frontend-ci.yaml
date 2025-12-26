@@ -1,4 +1,4 @@
-name: frontend
+name: frontend-ci
 
 on:
   pull_request:
@@ -47,4 +47,4 @@ jobs:
         with:
           context: ./frontend
           push: true
-          tags: sanjayramagiri99/frontend:latest
+          tags: sanjayramagiri99/frontend:latest-${{ github.sha }}
