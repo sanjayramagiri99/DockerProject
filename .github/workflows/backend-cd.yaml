@@ -3,41 +3,34 @@ name: backend-cd
 on:
   workflow_run:
     workflows: ["backend-ci"]
-    types:
-      - completed
+    types: [completed]
 
 permissions:
-  id-token: write
-  contents: read
+  id-token: write # REQUIRED for OIDC
+  contents: read # REQUIRED for checkout (if used)
 
 jobs:
   deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-build
-          path: backend/target
-
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::928558116854:role/ECRPushCICD
           aws-region: us-east-1
 
-      - name: Login to the AWS ECR
+      - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build Docker Image
-        run: docker build -t docker-project/new:backend-${{ github.sha }} .
-
-      - name: Push image to ECR
+      - name: Pull image from Docker Hub
         run: |
-          docker tag docker-project/new:${{ github.sha }} \
-          928558116854.dkr.ecr.us-east-1.amazonaws.com/docker-project/new:backend-${{ github.sha }} \
-          docker push 928558116854.dkr.ecr.us-east-1.amazonaws.com/docker-project/new:backend-${{ github.sha }}
+          docker pull sanjayramagiri99/backend:${{ github.event.workflow_run.head_sha }}
+
+      - name: Tag & Push to ECR
+        run: |
+          docker tag sanjayramagiri99/backend:${{ github.event.workflow_run.head_sha }} \
+          928558116854.dkr.ecr.us-east-1.amazonaws.com/docker-project/new:backend-${{ github.event.workflow_run.head_sha }}
+
+          docker push 928558116854.dkr.ecr.us-east-1.amazonaws.com/docker-project/new:backend-${{ github.event.workflow_run.head_sha }}
